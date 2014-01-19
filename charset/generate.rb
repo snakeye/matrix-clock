@@ -47,7 +47,8 @@ offset = 0
 puts 'uint8_t charset_char[] = {'
 for char in 0..127 do 
 	if charset[char]
-		puts "// %x" % char
+		print "// %x - " % char
+		puts char.chr
 		offsets[char] = offset
 		charset[char].each do |col|
 			puts "0b%08b," % col
