@@ -1,0 +1,8 @@
+// 0
+.XXX.
+X...X
+X..XX
+X.X.X
+XX..X
+X...X
+.XXX
