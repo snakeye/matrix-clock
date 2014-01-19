@@ -14708,6 +14708,7 @@ USART&lt;p&gt;
 <text x="1.27" y="2.54" size="1.27" layer="21">+</text>
 </package>
 <package name="IT1188E">
+<description>SMD Tact button</description>
 <smd name="3" x="0.56" y="0.9" dx="0.9" dy="1.3" layer="1"/>
 <smd name="4" x="4.74" y="0.9" dx="0.9" dy="1.3" layer="1"/>
 <smd name="1" x="-0.72" y="-0.9" dx="1.45" dy="1" layer="1"/>
@@ -14742,16 +14743,14 @@ USART&lt;p&gt;
 </packages>
 <symbols>
 <symbol name="CR2032">
-<pin name="VBAT" x="0" y="7.62" visible="off" length="middle" direction="pwr" rot="R270"/>
-<pin name="GND" x="0" y="-10.16" visible="off" length="middle" direction="pwr" rot="R90"/>
-<wire x1="0" y1="2.54" x2="0" y2="0" width="0.254" layer="94"/>
-<wire x1="0" y1="0" x2="5.08" y2="0" width="0.254" layer="94"/>
-<wire x1="0" y1="0" x2="-5.08" y2="0" width="0.254" layer="94"/>
-<wire x1="2.54" y1="-2.54" x2="0" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="0" y1="-2.54" x2="-2.54" y2="-2.54" width="0.254" layer="94"/>
-<wire x1="0" y1="-5.08" x2="0" y2="-2.54" width="0.254" layer="94"/>
+<pin name="VBAT" x="0" y="2.54" visible="off" length="short" direction="pwr" rot="R270"/>
+<pin name="GND" x="0" y="-3.81" visible="off" length="short" direction="pwr" rot="R90"/>
+<wire x1="0" y1="0" x2="2.54" y2="0" width="0.254" layer="94"/>
+<wire x1="0" y1="0" x2="-2.54" y2="0" width="0.254" layer="94"/>
+<wire x1="1.27" y1="-1.27" x2="-1.27" y2="-1.27" width="0.254" layer="94"/>
 <text x="0.762" y="0.508" size="1.778" layer="94">+</text>
-<text x="1.016" y="2.54" size="1.778" layer="95">CR2032</text>
+<text x="2.54" y="1.27" size="1.27" layer="95">&gt;NAME</text>
+<text x="2.54" y="-2.54" size="1.27" layer="96">CR2032</text>
 </symbol>
 <symbol name="HC0905A">
 <pin name="P$1" x="0" y="-2.54" visible="off" length="short" rot="R90"/>
@@ -14767,12 +14766,10 @@ USART&lt;p&gt;
 <text x="0.762" y="8.382" size="1.778" layer="95">&gt;NAME</text>
 </symbol>
 <symbol name="IT1188E">
-<pin name="3" x="-5.08" y="-2.54" length="short"/>
-<pin name="4" x="5.08" y="-2.54" length="short" rot="R180"/>
-<wire x1="-2.54" y1="-2.54" x2="0" y2="0" width="0.254" layer="94"/>
-<wire x1="2.54" y1="-2.54" x2="5.08" y2="-2.54" width="0.254" layer="94"/>
-<pin name="1" x="-5.08" y="0" length="short"/>
-<pin name="2" x="5.08" y="0" length="short" rot="R180"/>
+<pin name="3" x="-2.54" y="-2.54" visible="off" length="point" direction="pas"/>
+<pin name="4" x="1.27" y="-2.54" visible="off" length="point" direction="pas" rot="R180"/>
+<wire x1="-2.54" y1="-2.54" x2="0" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="0" y1="-2.54" x2="1.27" y2="-2.54" width="0.254" layer="94"/>
 </symbol>
 <symbol name="AVR-ISP">
 <pin name="MISO" x="-2.54" y="7.62" length="short"/>
@@ -14787,22 +14784,25 @@ USART&lt;p&gt;
 <text x="0" y="10.922" size="1.778" layer="95">ISP</text>
 </symbol>
 <symbol name="GL5537">
-<wire x1="-1.524" y1="7.62" x2="1.27" y2="7.62" width="0.254" layer="94"/>
-<wire x1="1.27" y1="7.62" x2="1.27" y2="0" width="0.254" layer="94"/>
-<wire x1="1.27" y1="0" x2="-1.524" y2="0" width="0.254" layer="94"/>
-<wire x1="-1.524" y1="0" x2="-1.524" y2="7.62" width="0.254" layer="94"/>
-<pin name="P$1" x="0" y="10.16" visible="off" length="short" rot="R270"/>
-<pin name="P$2" x="0" y="-2.54" visible="off" length="short" rot="R90"/>
-<wire x1="2.794" y1="4.318" x2="4.064" y2="5.588" width="0.254" layer="94"/>
-<wire x1="2.794" y1="5.08" x2="2.794" y2="4.318" width="0.254" layer="94"/>
-<wire x1="2.794" y1="4.318" x2="3.556" y2="4.318" width="0.254" layer="94"/>
-<wire x1="4.064" y1="3.81" x2="2.794" y2="2.54" width="0.254" layer="94"/>
-<wire x1="2.794" y1="3.302" x2="2.794" y2="2.54" width="0.254" layer="94"/>
-<wire x1="2.794" y1="2.54" x2="3.556" y2="2.54" width="0.254" layer="94"/>
+<pin name="P$1" x="-5.588" y="0" visible="off" length="short" direction="pas"/>
+<pin name="P$2" x="5.842" y="0" visible="off" length="short" direction="pas" rot="R180"/>
+<wire x1="0.635" y1="2.159" x2="1.905" y2="3.429" width="0.254" layer="94"/>
+<wire x1="1.397" y1="2.159" x2="0.635" y2="2.159" width="0.254" layer="94"/>
+<wire x1="0.635" y1="2.159" x2="0.635" y2="2.921" width="0.254" layer="94"/>
+<wire x1="0.127" y1="3.429" x2="-1.143" y2="2.159" width="0.254" layer="94"/>
+<wire x1="-0.381" y1="2.159" x2="-1.143" y2="2.159" width="0.254" layer="94"/>
+<wire x1="-1.143" y1="2.159" x2="-1.143" y2="2.921" width="0.254" layer="94"/>
+<wire x1="-3.048" y1="-1.27" x2="-3.048" y2="1.27" width="0.254" layer="94"/>
+<wire x1="-3.048" y1="1.27" x2="3.302" y2="1.27" width="0.254" layer="94"/>
+<wire x1="3.302" y1="1.27" x2="3.302" y2="-1.27" width="0.254" layer="94"/>
+<wire x1="3.302" y1="-1.27" x2="-3.048" y2="-1.27" width="0.254" layer="94"/>
+<text x="-3.683" y="-3.81" size="1.778" layer="95">&gt;NAME</text>
+<text x="-3.683" y="-6.223" size="1.778" layer="95">&gt;VALUE</text>
 </symbol>
 </symbols>
 <devicesets>
 <deviceset name="CR2032">
+<description>CR2032 Socket</description>
 <gates>
 <gate name="G$1" symbol="CR2032" x="0" y="0"/>
 </gates>
@@ -14835,14 +14835,13 @@ USART&lt;p&gt;
 </devices>
 </deviceset>
 <deviceset name="IT1188E">
+<description>IT1188E SMD Tact button</description>
 <gates>
 <gate name="G$1" symbol="IT1188E" x="0" y="0"/>
 </gates>
 <devices>
 <device name="" package="IT1188E">
 <connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
 <connect gate="G$1" pin="3" pad="3"/>
 <connect gate="G$1" pin="4" pad="4"/>
 </connects>
@@ -14853,6 +14852,7 @@ USART&lt;p&gt;
 </devices>
 </deviceset>
 <deviceset name="AVR-ISP">
+<description>ISP Socket for AVR microcontrollers</description>
 <gates>
 <gate name="G$1" symbol="AVR-ISP" x="-5.08" y="-2.54"/>
 </gates>
@@ -16569,7 +16569,7 @@ Source: www.cypressindustries.com</description>
 <part name="IC1" library="avr-7" deviceset="MEGA32" device="-A"/>
 <part name="IC2" library="lm1117" deviceset="LM1117IMPX-*" device="" technology="3.3"/>
 <part name="U$1" library="bc417" deviceset="BTM400_6B" device=""/>
-<part name="U$5" library="misc" deviceset="CR2032" device=""/>
+<part name="BAT1" library="misc" deviceset="CR2032" device=""/>
 <part name="U$7" library="misc" deviceset="HC0905" device=""/>
 <part name="U$9" library="misc" deviceset="IT1188E" device=""/>
 <part name="U$10" library="misc" deviceset="IT1188E" device=""/>
@@ -16615,7 +16615,7 @@ Source: www.cypressindustries.com</description>
 <part name="C8" library="rcl" deviceset="C-EU" device="C0805" value="0.1mf"/>
 <part name="GND20" library="supply1" deviceset="GND" device=""/>
 <part name="GND21" library="supply1" deviceset="GND" device=""/>
-<part name="U$12" library="misc" deviceset="GL5537" device=""/>
+<part name="PR1" library="misc" deviceset="GL5537" device=""/>
 <part name="R10" library="rcl" deviceset="R-EU_" device="R0805" value="1M"/>
 <part name="GND22" library="supply1" deviceset="GND" device=""/>
 <part name="P+12" library="supply1" deviceset="VCC" device=""/>
@@ -16661,7 +16661,7 @@ Source: www.cypressindustries.com</description>
 <instance part="IC1" gate="G$1" x="88.9" y="-50.8"/>
 <instance part="IC2" gate="G$1" x="12.7" y="-147.32"/>
 <instance part="U$1" gate="G$1" x="91.44" y="-185.42"/>
-<instance part="U$5" gate="G$1" x="35.56" y="-114.3"/>
+<instance part="BAT1" gate="G$1" x="35.56" y="-109.22"/>
 <instance part="U$7" gate="G$1" x="114.3" y="-127"/>
 <instance part="U$9" gate="G$1" x="20.32" y="-198.12"/>
 <instance part="U$10" gate="G$1" x="20.32" y="-208.28"/>
@@ -16674,7 +16674,7 @@ Source: www.cypressindustries.com</description>
 <instance part="P+6" gate="VCC" x="60.96" y="-27.94" rot="R90"/>
 <instance part="GND8" gate="1" x="22.86" y="-53.34" rot="R180"/>
 <instance part="GND9" gate="1" x="114.3" y="-134.62"/>
-<instance part="GND10" gate="1" x="35.56" y="-129.54"/>
+<instance part="GND10" gate="1" x="35.56" y="-114.3"/>
 <instance part="GND11" gate="1" x="12.7" y="-157.48"/>
 <instance part="P+7" gate="VCC" x="0" y="-147.32" rot="R90"/>
 <instance part="+3V2" gate="G$1" x="40.64" y="-147.32" rot="R270"/>
@@ -16707,10 +16707,10 @@ Source: www.cypressindustries.com</description>
 <instance part="C8" gate="G$1" x="33.02" y="-149.86"/>
 <instance part="GND20" gate="1" x="33.02" y="-162.56"/>
 <instance part="GND21" gate="1" x="27.94" y="-30.48"/>
-<instance part="U$12" gate="G$1" x="137.16" y="-121.92"/>
+<instance part="PR1" gate="G$1" x="137.16" y="-119.38" rot="R270"/>
 <instance part="R10" gate="G$1" x="137.16" y="-132.08" rot="R90"/>
 <instance part="GND22" gate="1" x="137.16" y="-142.24"/>
-<instance part="P+12" gate="VCC" x="137.16" y="-106.68"/>
+<instance part="P+12" gate="VCC" x="137.16" y="-109.22"/>
 <instance part="C11" gate="G$1" x="58.42" y="-43.18"/>
 <instance part="C12" gate="G$1" x="33.02" y="-20.32"/>
 <instance part="X1" gate="G$1" x="12.7" y="-12.7" rot="R180"/>
@@ -16923,9 +16923,9 @@ Source: www.cypressindustries.com</description>
 <wire x1="114.3" y1="-132.08" x2="114.3" y2="-129.54" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$5" gate="G$1" pin="GND"/>
+<pinref part="BAT1" gate="G$1" pin="GND"/>
 <pinref part="GND10" gate="1" pin="GND"/>
-<wire x1="35.56" y1="-124.46" x2="35.56" y2="-127" width="0.1524" layer="91"/>
+<wire x1="35.56" y1="-113.03" x2="35.56" y2="-111.76" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="IC2" gate="G$1" pin="GND"/>
@@ -16971,14 +16971,17 @@ Source: www.cypressindustries.com</description>
 <segment>
 <pinref part="U$11" gate="G$1" pin="4"/>
 <pinref part="GND16" gate="1" pin="GND"/>
+<wire x1="25.4" y1="-220.98" x2="21.59" y2="-220.98" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U$9" gate="G$1" pin="4"/>
 <pinref part="GND18" gate="1" pin="GND"/>
+<wire x1="25.4" y1="-200.66" x2="21.59" y2="-200.66" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="U$10" gate="G$1" pin="4"/>
 <pinref part="GND17" gate="1" pin="GND"/>
+<wire x1="25.4" y1="-210.82" x2="21.59" y2="-210.82" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="C5" gate="G$1" pin="1"/>
@@ -17140,6 +17143,7 @@ Source: www.cypressindustries.com</description>
 <junction x="68.58" y="-35.56"/>
 <pinref part="C11" gate="G$1" pin="1"/>
 <junction x="58.42" y="-40.64"/>
+<junction x="68.58" y="-40.64"/>
 </segment>
 <segment>
 <pinref part="P+6" gate="VCC" pin="VCC"/>
@@ -17181,9 +17185,9 @@ Source: www.cypressindustries.com</description>
 <wire x1="43.18" y1="-76.2" x2="43.18" y2="-78.74" width="0.1524" layer="91"/>
 </segment>
 <segment>
-<pinref part="U$12" gate="G$1" pin="P$1"/>
+<pinref part="PR1" gate="G$1" pin="P$1"/>
 <pinref part="P+12" gate="VCC" pin="VCC"/>
-<wire x1="137.16" y1="-109.22" x2="137.16" y2="-111.76" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="-111.76" x2="137.16" y2="-113.792" width="0.1524" layer="91"/>
 </segment>
 <segment>
 <pinref part="R15" gate="G$1" pin="2"/>
@@ -17918,7 +17922,7 @@ Source: www.cypressindustries.com</description>
 <net name="BUTTON1" class="0">
 <segment>
 <pinref part="U$9" gate="G$1" pin="3"/>
-<wire x1="15.24" y1="-200.66" x2="12.7" y2="-200.66" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="-200.66" x2="12.7" y2="-200.66" width="0.1524" layer="91"/>
 <label x="12.7" y="-200.66" size="1.016" layer="95" rot="MR0" xref="yes"/>
 </segment>
 <segment>
@@ -17930,7 +17934,7 @@ Source: www.cypressindustries.com</description>
 <net name="BUTTON2" class="0">
 <segment>
 <pinref part="U$10" gate="G$1" pin="3"/>
-<wire x1="15.24" y1="-210.82" x2="12.7" y2="-210.82" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="-210.82" x2="12.7" y2="-210.82" width="0.1524" layer="91"/>
 <label x="12.7" y="-210.82" size="1.016" layer="95" rot="MR0" xref="yes"/>
 </segment>
 <segment>
@@ -17942,7 +17946,7 @@ Source: www.cypressindustries.com</description>
 <net name="BUTTON3" class="0">
 <segment>
 <pinref part="U$11" gate="G$1" pin="3"/>
-<wire x1="15.24" y1="-220.98" x2="12.7" y2="-220.98" width="0.1524" layer="91"/>
+<wire x1="17.78" y1="-220.98" x2="12.7" y2="-220.98" width="0.1524" layer="91"/>
 <label x="12.7" y="-220.98" size="1.016" layer="95" rot="MR0" xref="yes"/>
 </segment>
 <segment>
@@ -17954,7 +17958,7 @@ Source: www.cypressindustries.com</description>
 <net name="N$3" class="0">
 <segment>
 <pinref part="IC3" gate="G$1" pin="VBAT"/>
-<pinref part="U$5" gate="G$1" pin="VBAT"/>
+<pinref part="BAT1" gate="G$1" pin="VBAT"/>
 <wire x1="30.48" y1="-106.68" x2="35.56" y2="-106.68" width="0.1524" layer="91"/>
 </segment>
 </net>
@@ -17980,9 +17984,9 @@ Source: www.cypressindustries.com</description>
 </net>
 <net name="SENSOR" class="0">
 <segment>
-<pinref part="U$12" gate="G$1" pin="P$2"/>
+<pinref part="PR1" gate="G$1" pin="P$2"/>
 <pinref part="R10" gate="G$1" pin="2"/>
-<wire x1="137.16" y1="-127" x2="137.16" y2="-124.46" width="0.1524" layer="91"/>
+<wire x1="137.16" y1="-127" x2="137.16" y2="-125.222" width="0.1524" layer="91"/>
 <wire x1="137.16" y1="-127" x2="134.62" y2="-127" width="0.1524" layer="91"/>
 <junction x="137.16" y="-127"/>
 <label x="134.62" y="-127" size="1.016" layer="95" rot="R180" xref="yes"/>

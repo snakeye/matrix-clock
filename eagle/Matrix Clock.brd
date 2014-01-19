@@ -1643,6 +1643,7 @@ Based on the following sources:&lt;p&gt;
 <text x="1.27" y="2.54" size="1.27" layer="21">+</text>
 </package>
 <package name="IT1188E">
+<description>SMD Tact button</description>
 <smd name="3" x="0.56" y="0.9" dx="0.9" dy="1.3" layer="1"/>
 <smd name="4" x="4.74" y="0.9" dx="0.9" dy="1.3" layer="1"/>
 <smd name="1" x="-0.72" y="-0.9" dx="1.45" dy="1" layer="1"/>
@@ -2092,8 +2093,14 @@ design rules under a new name.</description>
 <elements>
 <element name="LED1" library="LED" package="CPD15088" value="CPD-15088YGD2/A" x="152.8" y="38.1" locked="yes" rot="MR0"/>
 <element name="IC4" library="max7219" package="SO24L" value="MAX7219CWG" x="130.91" y="18.41" rot="MR180"/>
-<element name="R1" library="rcl" package="R0805" value="10k" x="131.03" y="16.46"/>
-<element name="C1" library="rcl" package="C0805" value="0.1mf" x="130.99" y="19.47"/>
+<element name="R1" library="rcl" package="R0805" value="10k" x="131.03" y="16.46" smashed="yes">
+<attribute name="NAME" x="128.895" y="13.73" size="1.27" layer="25"/>
+<attribute name="VALUE" x="131.645" y="13.92" size="1.27" layer="27"/>
+</element>
+<element name="C1" library="rcl" package="C0805" value="0.1mf" x="130.99" y="19.47" smashed="yes">
+<attribute name="NAME" x="128.22" y="20.74" size="1.27" layer="25"/>
+<attribute name="VALUE" x="130.72" y="20.93" size="1.27" layer="27"/>
+</element>
 <element name="LED2" library="LED" package="CPD15088" value="CPD-15088YGD2/A" x="114.53" y="38.1" locked="yes" rot="MR0"/>
 <element name="IC5" library="max7219" package="SO24L" value="MAX7219CWG" x="105.63" y="18.91" rot="MR180"/>
 <element name="R2" library="rcl" package="R0805" value="10k" x="101.55" y="17.46"/>
@@ -2109,7 +2116,7 @@ design rules under a new name.</description>
 <element name="IC1" library="avr-7" package="TQFP44" value="MEGA32-A" x="74.62" y="17.9" rot="R90"/>
 <element name="IC2" library="lm1117" package="SOT223" value="LM1117IMPX-3.3" x="5.42" y="23.32" rot="MR180"/>
 <element name="U$1" library="bc417" package="BTM400_6B" value="" x="38.21" y="13.84" rot="R180"/>
-<element name="U$5" library="misc" package="CR2032-SMD" value="CR2032" x="114.52" y="18.4" rot="R90"/>
+<element name="BAT1" library="misc" package="CR2032-SMD" value="CR2032" x="114.52" y="18.4" rot="R90"/>
 <element name="U$7" library="misc" package="HC0905" value="HC0905" x="147.82" y="9.64" rot="R270"/>
 <element name="U$9" library="misc" package="IT1188E" value="IT1188E" x="22.37" y="36.39" rot="R180"/>
 <element name="U$10" library="misc" package="IT1188E" value="IT1188E" x="35.98" y="36.39" rot="R180"/>
@@ -2139,11 +2146,11 @@ design rules under a new name.</description>
 <element name="C6" library="rcl" package="C0805" value="22" x="81.36" y="8.02" rot="MR270"/>
 <element name="C7" library="rcl" package="C0805" value="0.1mf" x="93.49" y="24.07" rot="R270"/>
 <element name="C8" library="rcl" package="C0805" value="0.1mf" x="41.49" y="23.47" rot="MR90"/>
-<element name="U$12" library="misc" package="GL55" value="GL5537" x="72.27" y="34.96" rot="R180"/>
+<element name="PR1" library="misc" package="GL55" value="GL5537" x="72.27" y="34.96" rot="R180"/>
 <element name="R10" library="rcl" package="R0805" value="1M" x="72.04" y="30.02" rot="R180"/>
 <element name="C11" library="rcl" package="C0805" value="0.1mf" x="77" y="27" rot="R180"/>
 <element name="C12" library="rcl" package="C0805" value="0.1mf" x="13.1" y="13.1" rot="R270"/>
-<element name="X1" library="con-cypressindustries" package="32005-301" value="MINI-USB-SCHIELD-32005-301" x="5.5" y="13" locked="yes">
+<element name="X1" library="con-cypressindustries" package="32005-301" value="MINI-USB-SCHIELD-32005-301" x="5.5" y="13" locked="yes" smashed="yes">
 <attribute name="OC_NEWARK" value="unknown" x="5.5" y="13" size="1.778" layer="27" display="off"/>
 <attribute name="MPN" value="" x="5.5" y="13" size="1.778" layer="27" display="off"/>
 <attribute name="MF" value="" x="5.5" y="13" size="1.778" layer="27" display="off"/>
@@ -2282,7 +2289,7 @@ design rules under a new name.</description>
 <contactref element="IC1" pad="28"/>
 <contactref element="U$3" pad="6"/>
 <contactref element="U$7" pad="P$1"/>
-<contactref element="U$5" pad="-"/>
+<contactref element="BAT1" pad="-"/>
 <contactref element="IC2" pad="1"/>
 <contactref element="LED5" pad="C"/>
 <contactref element="LED6" pad="C"/>
@@ -2727,7 +2734,7 @@ design rules under a new name.</description>
 <contactref element="IC3" pad="8"/>
 <contactref element="R8" pad="2"/>
 <contactref element="R9" pad="2"/>
-<contactref element="U$12" pad="P$1"/>
+<contactref element="PR1" pad="P$1"/>
 <contactref element="C11" pad="1"/>
 <contactref element="C12" pad="1"/>
 <contactref element="X1" pad="1"/>
@@ -3996,7 +4003,7 @@ design rules under a new name.</description>
 </signal>
 <signal name="N$3">
 <contactref element="IC3" pad="3"/>
-<contactref element="U$5" pad="+"/>
+<contactref element="BAT1" pad="+"/>
 <wire x1="89.65" y1="19.9" x2="89.65" y2="21.25" width="0.2032" layer="1"/>
 <wire x1="91.3" y1="18.25" x2="89.65" y2="19.9" width="0.2032" layer="1"/>
 <wire x1="91.3" y1="6.55" x2="91.3" y2="18.25" width="0.2032" layer="1"/>
@@ -4033,7 +4040,7 @@ design rules under a new name.</description>
 <wire x1="78.6" y1="6.9" x2="78.563" y2="6.9" width="0.2032" layer="16"/>
 </signal>
 <signal name="SENSOR">
-<contactref element="U$12" pad="P$2"/>
+<contactref element="PR1" pad="P$2"/>
 <contactref element="R10" pad="2"/>
 <contactref element="IC1" pad="30"/>
 <wire x1="71.1" y1="34.65" x2="71.1" y2="30.05" width="0.2032" layer="1"/>
