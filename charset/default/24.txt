@@ -1,8 +1,8 @@
 // $
 ..X..
 .XXXX
-X....
+X.X..
 .XXX.
-....X
-.XXX.
+..X.X
+XXXX.
 ..X..
