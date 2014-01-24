@@ -2,7 +2,7 @@
  * ds1307.h
  *
  * Created: 04.02.2012 18:42:43
- *  Author: Andrey Ovcharov
+ * Author: Andrey Ovcharov
  */
 #ifndef DS1307_H_
 #define DS1307_H_

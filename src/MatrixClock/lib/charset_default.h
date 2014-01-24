@@ -4,8 +4,6 @@
  * Created: 19.01.2014 14:47:28
  *  Author: snakeye
  */ 
-
-
 #ifndef CHARSET_DEFAULT_H_
 #define CHARSET_DEFAULT_H_
 

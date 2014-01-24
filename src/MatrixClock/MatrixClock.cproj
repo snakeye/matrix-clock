@@ -79,7 +79,7 @@
       <Value>F_CPU=16000000</Value>
     </ListValues>
   </avrgcc.compiler.symbols.DefSymbols>
-  <avrgcc.compiler.optimization.level>Optimize (-O1)</avrgcc.compiler.optimization.level>
+  <avrgcc.compiler.optimization.level>Optimize for size (-Os)</avrgcc.compiler.optimization.level>
   <avrgcc.compiler.optimization.PackStructureMembers>True</avrgcc.compiler.optimization.PackStructureMembers>
   <avrgcc.compiler.optimization.AllocateBytesNeededForEnum>True</avrgcc.compiler.optimization.AllocateBytesNeededForEnum>
   <avrgcc.compiler.optimization.DebugLevel>Default (-g2)</avrgcc.compiler.optimization.DebugLevel>
@@ -94,6 +94,18 @@
     </ToolchainSettings>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="lib\brightness.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\brightness.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\buttons.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\buttons.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="lib\charset_default.c">
       <SubType>compile</SubType>
     </Compile>
@@ -122,6 +134,30 @@
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="lib\max7219.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\settings.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\settings.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\sound.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\sound.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\string.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\string.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\usart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="lib\usart.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="MatrixClock.c">

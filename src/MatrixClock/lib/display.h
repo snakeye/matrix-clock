@@ -4,8 +4,6 @@
  * Created: 19.01.2014 14:47:28
  *  Author: snakeye
  */ 
-
-
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
