@@ -57,6 +57,7 @@ for char in 0..127 do
 	end
 end
 puts '};'
+puts ''
 
 puts 'uint8_t charset_width[] = {'
 for char in 0..127 do 
@@ -70,8 +71,9 @@ for char in 0..127 do
 	end
 end
 puts '};'
+puts ''
 
-puts 'uint8_t charset_offset[] = {'
+puts 'uint16_t charset_offset[] = {'
 for char in 0..127 do 
 	if offsets[char]
 		print offsets[char].to_s
