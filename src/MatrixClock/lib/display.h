@@ -31,6 +31,8 @@ void display_clear_pixel(uint8_t x, uint8_t y);
 
 void display_draw_sprite(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* data);
 
+void display_draw_string(uint8_t x, uint8_t y, char* str);
+
 // perform all canvas updates
 void display_update();
 
@@ -42,5 +44,7 @@ void display_execute();
 // execute all commands from command buffer
 void display_execute_all();
 
+// test mode for display - all digits are on
+void display_test_mode();
 
 #endif /* DISPLAY_H_ */

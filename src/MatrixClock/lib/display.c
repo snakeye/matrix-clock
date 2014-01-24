@@ -8,6 +8,7 @@
 
 #include "display.h"
 #include "max7219.h"
+#include "charset_default.h"
 
 uint8_t display_canvas[DISPLAY_SEGMENTS * 8] = {0};
 uint8_t display_buffer[DISPLAY_SEGMENTS * 8] = {0};
@@ -125,7 +126,7 @@ void display_clear_pixel(uint8_t x, uint8_t y)
 }
 
 /**
- * @todo optimize
+ * @todo optimize!!!
  */
 void display_draw_sprite(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* data)
 {
@@ -138,6 +139,38 @@ void display_draw_sprite(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* da
 				display_clear_pixel(x + col, y + row);	
 		}		
 	}
+}
+
+void display_draw_string(uint8_t x, uint8_t y, char* str)
+{
+	uint8_t i = x;
+	uint8_t ch;
+	uint8_t char_width;
+	uint16_t char_offset;
+	
+	for(char* p = str; *p != '\0' && i < (DISPLAY_SEGMENTS * 8); p++)
+	{
+		// we draw only first half of ASCII charset
+		if(*p > 127)
+			continue;
+		
+		// get character index
+		ch = (uint8_t)*p;
+		
+		// character width
+		char_width = charset_width[ch];
+		if(char_width == 0)
+			continue;		
+		
+		// character offset
+		char_offset = charset_offset[ch];
+		
+		// draw character
+		display_draw_sprite(i, y, char_width, 8, &charset_char[char_offset]);
+		
+		// position of the next char
+		i += char_width + 1;	
+	}	
 }
 
 void display_update()
