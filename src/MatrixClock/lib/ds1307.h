@@ -12,6 +12,15 @@
 #define HOUR_24 0
 #define HOUR_12 1
 
+#define DS1307_SECOND 0 
+#define DS1307_MINUTE 1
+#define DS1307_HOUR 2
+#define DS1307_DAY 3
+#define DS1307_DATE 4
+#define DS1307_MONTH 5
+#define DS1307_YEAR 6
+#define DS1307_CONTROL 7
+
 // DS1307 Register Address
 // Second: ds1307_addr[0]
 // Minute: ds1307_addr[1]
@@ -25,6 +34,8 @@ extern unsigned char ds1307_addr[8];
 
 // reset clock chip
 void ds1307_reset ();
+
+void ds1307_tick();
 
 // read clock data
 void ds1307_read ();

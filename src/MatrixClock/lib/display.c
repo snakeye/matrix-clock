@@ -77,6 +77,10 @@ void display_execute_all()
 
 void display_init()
 {
+	// disable JTAG. Write twice within 4 cycles
+	MCUCSR = (1<<JTD);
+	MCUCSR = (1<<JTD);
+
 	DDRC |= (1 << MAX7219_DIN) | (1 << MAX7219_CLK) | (1 << MAX7219_LOAD);
 	
 	for(uint8_t i = 0; i < DISPLAY_SEGMENTS; i++) {

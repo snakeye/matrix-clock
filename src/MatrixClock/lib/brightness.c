@@ -7,6 +7,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 
+#include "settings.h"
+
 uint16_t brightness;
 
 /**
@@ -46,4 +48,22 @@ uint16_t measure_brightness_sync()
 	brightness = (ADCL | (ADCH << 8));
 
 	return brightness;
+}
+
+void brightness_tick()
+{
+	static uint8_t tick = 0;
+	tick++;
+	if(tick >= 100) {
+		if(settings.brightness_auto) {
+			//
+			uint8_t b = (brightness * (settings.brightness_max - settings.brightness_min)) / 1024 + settings.brightness_min;
+			display_set_brightness(b);
+			
+			//
+			measure_brightness_async();
+		}
+
+		tick = 0;
+	}
 }

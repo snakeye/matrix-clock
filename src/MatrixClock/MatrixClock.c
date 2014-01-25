@@ -17,6 +17,7 @@
 #include "lib/usart.h"
 #include "lib/buttons.h"
 #include "lib/ds1307.h"
+#include "lib/terminal.h"
 
 #include "lib/settings.h"
 
@@ -25,21 +26,18 @@
 typedef enum {
 	DISPLAY_MODE_TEST,
 	DISPLAY_MODE_TIME,
-	DISPLAY_MODE_DATE
+	DISPLAY_MODE_DATE_SHORT,
+	DISPLAY_MODE_DATE_MED,
+	DISPLAY_MODE_WEEKDAY,
 } DisplayMode;
+
+DisplayMode display_mode = DISPLAY_MODE_TIME;
 
 /**
 * Initialize
 */
 void init()
 {
-	// disable JTAG. Write twice within 4 cycles
-	MCUCSR = (1<<JTD);
-	MCUCSR = (1<<JTD);
-	
-	// initialize display
-	display_init();
-	
 	// initialize ADC
 	adc_init();
 	
@@ -58,49 +56,58 @@ void init()
 	sei();
 }
 
-void process_terminal()
+void on_button_click(uint8_t button)
 {
-	char response[64];
+}
+
+void on_button_hold(uint8_t button)
+{
+}
+
+void on_button_release(uint8_t button)
+{
+}
+
+void animate_time()
+{
+	static uint8_t min = 0;
+	static uint8_t tick = 0;
+	char buf[10];
 	
-	// hello
-	if(strcmp(usart_command, "Hello\r\n") == 0) {
-		usart_transmit_async("Hello\r\n");
-		return;
+	tick++;
+	if(tick >= 30) {
+		min = (min + 1) % 60;
+		tick = 0;
 	}
+		
+	buf[0] = '0';
+	buf[1] = '0';
+	buf[2] = ':';
+	buf[3] = '0' + (min / 10);
+	buf[4] = '0' + (min % 10);
+	buf[5] = 0;
 	
-	if(strcmp(usart_command, "Time?\r\n") == 0) {
-		char buffer[10];
-		str_uint16dec(response, ds1307_addr[2]);
-		
-		stradd(response, ":");
-		
-		str_uint16dec(buffer, ds1307_addr[1]);
-		stradd(response, buffer);
-		
-		stradd(response, ":");
-		
-		str_uint16dec(buffer, ds1307_addr[0]);
-		stradd(response, buffer);
-		
-		//
-		stradd(response, "\r\n");
-		usart_transmit_async(response);
-		
-		return;
+	display_clear_canvas();
+	display_draw_string(3, 0, buf);
+}
+
+void animation_tick()
+{
+	static uint8_t tick = 0;
+	tick++;
+	if(tick >= 30) {
+
+		switch(display_mode) {
+			case DISPLAY_MODE_TEST:
+				break;
+			case DISPLAY_MODE_TIME:
+				animate_time(); 
+				break;
+		}
+
+		display_update();
+		tick = 0;
 	}
-	
-	// asked brightness
-	if(strcmp(usart_command, "Light?\r\n") == 0){
-		str_uint16dec(response, brightness);
-		
-		//
-		stradd(response, "\r\n");
-		usart_transmit_async(response);
-		
-		return;
-	}
-	
-	usart_transmit_async("Error\r\n");
 }
 
 /**
@@ -108,6 +115,14 @@ void process_terminal()
 */
 int main(void)
 {
+	// initialize display
+	display_init();
+
+	// Welcome string	
+	display_clear_canvas();
+	display_draw_string(0, 0, "Hello!");
+	display_update();
+
 	// initialize everything
 	init();
 
@@ -116,11 +131,7 @@ int main(void)
 	
 	// apply loaded settings
 	apply_settings();
-
-	display_clear_canvas();
-	display_draw_string(0, 0, "Hello");
-	display_update();
-
+	
 	while(1)
 	{
 		// process inputs
@@ -128,19 +139,18 @@ int main(void)
 			process_terminal();
 			usart_has_command = 0;
 		}
-		
-		
-		if(settings.brightness_auto) {
-			measure_brightness_async();
-		}
-		
-		// set display brightness
-		if(settings.brightness_auto) {
-			uint8_t b = (brightness * (settings.brightness_max - settings.brightness_min)) / 1024 + settings.brightness_min;
-			display_set_brightness(b);
-		}
-		
-		_delay_ms(40);
+
+		//
+		buttons_tick();
+
+		//
+		brightness_tick();
+
+		//
+		animation_tick();
+
+		//		
+		_delay_ms(1);
 	}
 	
 	return 0;
