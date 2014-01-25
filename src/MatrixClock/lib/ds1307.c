@@ -10,21 +10,16 @@
 #define DS1307_ID    0xD0	// I2C DS1307 Device Identifier
 #define DS1307_ADDR  0x00	// I2C DS1307 Device Address
 
-// DS1307 Register Address
-// Second: ds1307_addr[0]
-// Minute: ds1307_addr[1]
-// Hour  : ds1307_addr[2]
-// Day   : ds1307_addr[3]
-// Date  : ds1307_addr[4]
-// Month : ds1307_addr[5]
-// Year  : ds1307_addr[6]
-// control ds1307_addr[7]
+
 unsigned char ds1307_addr[8] = { 0 };
 
 unsigned char hour_mode;
 
 unsigned char ampm_mode;
 
+/**
+ * 
+ */
 void ds1307_reset ()
 {
     // Start the I2C Write Transmission
@@ -37,9 +32,11 @@ void ds1307_reset ()
 
     // Stop I2C Transmission
     i2c_stop ();
-
 }
 
+/**
+ * 
+ */
 void ds1307_write ()
 {
     unsigned char hour_format;
@@ -86,6 +83,9 @@ void ds1307_write ()
     i2c_stop ();
 }
 
+/**
+ * 
+ */
 void ds1307_read ()
 {
     unsigned char data;

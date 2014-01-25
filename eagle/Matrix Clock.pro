@@ -1,25 +1,25 @@
 EAGLE AutoRouter Statistics:
 
-Job           : D:/Documents/eagle/Matrix Clock/Matrix Clock.brd
+Job           : D:/Documents/GitHub/arduino-matrix-clock/eagle/Matrix Clock.brd
 
-Start at      : 23:05:57 (09.12.2013)
-End at        : 23:06:24 (09.12.2013)
-Elapsed time  : 00:00:27
+Start at      : 12:41:42 (25.01.2014)
+End at        : 12:44:21 (25.01.2014)
+Elapsed time  : 00:02:39
 
-Signals       :   103   RoutingGrid: 1.9685 mil  Layers: 2
-Connections   :   183   predefined:  182 ( 157 Vias )
+Signals       :   101   RoutingGrid: 1.9685 mil  Layers: 2
+Connections   :   181   predefined:  0 ( 0 Vias )
 
-Router memory :   9885228
+Router memory :   9837080
 
-Passname          :     Route Optimize1 Optimize2 Optimize3 Optimize4
+Passname          :     Route
 
-Time per pass     :  00:00:02  00:00:06  00:00:06  00:00:06  00:00:07
-Number of Ripups  :         0         0         0         0         0
-max. Level        :         0         0         0         0         0
-max. Total        :         0         0         0         0         0
+Time per pass     :  00:02:39
+Number of Ripups  :        11
+max. Level        :         1
+max. Total        :        42
 
-Routed            :         1         1         1         1         1
-Vias              :         6         4         4         4         4
-Resolution        :   100.0 %   100.0 %   100.0 %   100.0 %   100.0 %
+Routed            :       181
+Vias              :       298
+Resolution        :   100.0 %
 
 Final             : 100.0% finished

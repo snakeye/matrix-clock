@@ -8,6 +8,7 @@
 #define BUTTONS_H_
 
 
+void buttons_init();
 
 
 

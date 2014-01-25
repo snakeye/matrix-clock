@@ -17,7 +17,7 @@ ISR(ADC_vect)
 	brightness = (ADCL | (ADCH << 8));
 }
 
-void init_adc()
+void adc_init()
 {
 	// init ADC
 	// VCC with capacitor on AREF

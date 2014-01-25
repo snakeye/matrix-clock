@@ -24,12 +24,15 @@ void display_set_column(uint8_t col, uint8_t data);
 
 // set single pixel
 void display_set_pixel(uint8_t x, uint8_t y);
+
 // clear single pixel
 void display_clear_pixel(uint8_t x, uint8_t y);
 
-void display_draw_sprite(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* data);
+//
+void display_draw_sprite(int8_t x, int8_t y, uint8_t w, uint8_t h, const uint8_t* data);
 
-void display_draw_string(uint8_t x, uint8_t y, char* str);
+//
+void display_draw_string(int8_t x, int8_t y, const char* str);
 
 // perform all canvas updates
 void display_update();
@@ -39,6 +42,7 @@ void display_push_cmd(uint8_t segment, uint8_t reg, uint8_t data);
 
 // execute single command from command buffer
 void display_execute();
+
 // execute all commands from command buffer
 void display_execute_all();
 

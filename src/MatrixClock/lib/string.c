@@ -1,11 +1,24 @@
 /*
- * string.c
- *
- * Created: 24.01.2014 23:06:48
- *  Author: snakeye
- */ 
+* string.c
+*
+* Created: 24.01.2014 23:06:48
+*  Author: snakeye
+*/
 #include <avr/io.h>
+#include <string.h>
 
+void stradd(char* buffer, const char* str)
+{
+	uint8_t i;
+	for(i = 0; buffer[i] != '\0'; i++) {
+		
+	}
+	strcpy(&buffer[i], str);
+}
+
+/**
+ * 
+ */
 void str_uint16dec(char* str, uint16_t value)
 {
 	uint8_t skip = 1;
@@ -16,21 +29,21 @@ void str_uint16dec(char* str, uint16_t value)
 	{
 		uint8_t digit = (value % (divisor * 10)) / divisor;
 		
-		if(digit == 0) 
+		if(digit == 0)
 		{
 			if(!skip || divisor == 1)
 			{
 				str[pos++] = '0';
-			}					
+			}
 		}
-		else 
+		else
 		{
 			str[pos++] = '0' + digit;
 			skip = 0;
 		}
 		
-		divisor = divisor / 10;	
-	}	
+		divisor = divisor / 10;
+	}
 	
 	str[pos] = '\0';
 }

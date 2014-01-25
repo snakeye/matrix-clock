@@ -1,10 +1,11 @@
 /*
- * display.c
- *
- * Created: 19.01.2014 14:46:55
- *  Author: snakeye
- */ 
+* display.c
+*
+* Created: 19.01.2014 14:46:55
+*  Author: snakeye
+*/
 #include <avr/io.h>
+#include <avr/pgmspace.h>
 
 #include "display.h"
 #include "max7219.h"
@@ -126,29 +127,38 @@ void display_clear_pixel(uint8_t x, uint8_t y)
 }
 
 /**
- * @todo optimize!!!
+ * 
  */
-void display_draw_sprite(uint8_t x, uint8_t y, uint8_t w, uint8_t h, uint8_t* data)
+void display_draw_sprite(int8_t x, int8_t y, uint8_t w, uint8_t h, const uint8_t* data)
 {
+	uint8_t mask = (y >= 0) ? (0xFF << y) : (0xFF > y);
+
 	for(uint8_t col = 0; col < w; col++) {
 		uint8_t pixels = data[col];
-		for(uint8_t row = 0; (row < h) && (row < 8); row ++) {
-			if(pixels & (1 << row))
-				display_set_pixel(x + col, y + row);
-			else 
-				display_clear_pixel(x + col, y + row);	
-		}		
+		
+		pixels = (y >= 0) ? (pixels << y) : (pixels >> (-y));
+		
+		display_canvas[col] &= ~(mask);
+		display_canvas[col] |= pixels;
 	}
 }
 
-void display_draw_string(uint8_t x, uint8_t y, char* str)
+/**
+ * 
+ */
+void display_draw_string(int8_t x, int8_t y, const char* str)
 {
-	uint8_t i = x;
+	int8_t i = x;
 	uint8_t ch;
 	uint8_t char_width;
 	uint16_t char_offset;
 	
-	for(char* p = str; *p != '\0' && i < (DISPLAY_SEGMENTS * 8); p++)
+	// if is not visible, return
+	if(y < -8 || y > 8) return;
+	
+	uint8_t mask = (y >= 0) ? (0xFF << y) : (0xFF > y);
+	
+	for(char* p = (char*)str; *p != '\0' && i < (DISPLAY_SEGMENTS * 8); p++)
 	{
 		// we draw only first half of ASCII charset
 		if(*p > 127)
@@ -158,21 +168,39 @@ void display_draw_string(uint8_t x, uint8_t y, char* str)
 		ch = (uint8_t)*p;
 		
 		// character width
-		char_width = charset_width[ch];
+		char_width = pgm_read_byte(&charset_width[ch]);
 		if(char_width == 0)
 			continue;		
 		
 		// character offset
-		char_offset = charset_offset[ch];
+		char_offset = pgm_read_word(&charset_offset[ch]);
 		
 		// draw character
-		display_draw_sprite(i, y, char_width, 8, &charset_char[char_offset]);
+		for(int8_t j = 0; j < char_width; j++) 
+		{
+			int8_t col = i + j;
+			if(col >= 0 && col < (DISPLAY_SEGMENTS * 8))
+			{
+				// read column pixels from program memory
+				uint8_t pixels = pgm_read_byte(&charset_char[char_offset] + j);
+
+				// shift pixels			
+				pixels = (y >= 0) ? (pixels << y) : (pixels >> (-y));
+				
+				// update canvas
+				display_canvas[col] &= ~(mask);
+				display_canvas[col] |= pixels;
+			}
+		}
 		
 		// position of the next char
 		i += char_width + 1;	
 	}	
 }
 
+/**
+ * 
+ */
 void display_update()
 {
 	for(uint8_t x = 0; x < DISPLAY_SEGMENTS * 8; x++) {

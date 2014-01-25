@@ -12,7 +12,15 @@
 #define HOUR_24 0
 #define HOUR_12 1
 
-// clock data
+// DS1307 Register Address
+// Second: ds1307_addr[0]
+// Minute: ds1307_addr[1]
+// Hour  : ds1307_addr[2]
+// Day   : ds1307_addr[3]
+// Date  : ds1307_addr[4]
+// Month : ds1307_addr[5]
+// Year  : ds1307_addr[6]
+// control ds1307_addr[7]
 extern unsigned char ds1307_addr[8];
 
 // reset clock chip

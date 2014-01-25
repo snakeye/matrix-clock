@@ -9,6 +9,10 @@
 
 typedef struct {
 	
+	uint8_t brightness;
+	uint8_t brightness_auto;
+	uint8_t brightness_min;
+	uint8_t brightness_max;
 } Settings;
 
 extern Settings settings;
