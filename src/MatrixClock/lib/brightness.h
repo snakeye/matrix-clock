@@ -11,7 +11,6 @@ extern uint16_t brightness;
 
 void adc_init();
 void measure_brightness_async();
-uint16_t measure_brightness_sync();
 
 void brightness_tick();
 

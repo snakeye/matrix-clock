@@ -16,6 +16,8 @@
 #define ACK 1
 #define NACK 0
 
+void i2c_init();
+
 /* START I2C Routine */
 unsigned char i2c_transmit (unsigned char type);
 

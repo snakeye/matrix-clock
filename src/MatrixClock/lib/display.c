@@ -150,55 +150,63 @@ void display_draw_sprite(int8_t x, int8_t y, uint8_t w, uint8_t h, const uint8_t
 /**
  * 
  */
+uint8_t display_draw_char(int8_t x, int8_t y, char ch)
+{
+	// we draw only first half of ASCII charset
+	if(ch > 127)
+		return 0;
+	
+	uint8_t mask = (y >= 0) ? (0xFF << y) : (0xFF > y);
+
+	uint8_t ch_index = (uint8_t) ch;
+
+	// character width
+	uint8_t char_width = pgm_read_byte(&charset_width[ch_index]);
+	if(char_width == 0)
+		return 0;
+			
+	// character offset
+	uint16_t char_offset = pgm_read_word(&charset_offset[ch_index]);
+			
+	// draw character
+	for(int8_t j = 0; j < char_width; j++)
+	{
+		int8_t col = x + j;
+		if(col >= 0 && col < (DISPLAY_SEGMENTS * 8))
+		{
+			// read column pixels from program memory
+			uint8_t pixels = pgm_read_byte(&charset_char[char_offset] + j);
+
+			// shift pixels
+			pixels = (y >= 0) ? (pixels << y) : (pixels >> (-y));
+					
+			// update canvas
+			display_canvas[col] &= ~(mask);
+			display_canvas[col] |= pixels;
+		}
+	}
+			
+	return char_width;
+}
+
+/**
+ * 
+ */
 void display_draw_string(int8_t x, int8_t y, const char* str)
 {
-	int8_t i = x;
-	uint8_t ch;
-	uint8_t char_width;
-	uint16_t char_offset;
-	
 	// if is not visible, return
 	if(y < -8 || y > 8) return;
 	
-	uint8_t mask = (y >= 0) ? (0xFF << y) : (0xFF > y);
+	int8_t i = x;
 	
 	for(char* p = (char*)str; *p != '\0' && i < (DISPLAY_SEGMENTS * 8); p++)
 	{
-		// we draw only first half of ASCII charset
-		if(*p > 127)
-			continue;
-		
-		// get character index
-		ch = (uint8_t)*p;
-		
-		// character width
-		char_width = pgm_read_byte(&charset_width[ch]);
-		if(char_width == 0)
-			continue;		
-		
-		// character offset
-		char_offset = pgm_read_word(&charset_offset[ch]);
-		
-		// draw character
-		for(int8_t j = 0; j < char_width; j++) 
-		{
-			int8_t col = i + j;
-			if(col >= 0 && col < (DISPLAY_SEGMENTS * 8))
-			{
-				// read column pixels from program memory
-				uint8_t pixels = pgm_read_byte(&charset_char[char_offset] + j);
-
-				// shift pixels			
-				pixels = (y >= 0) ? (pixels << y) : (pixels >> (-y));
+		uint8_t char_width = display_draw_char(i, y, *p);
 				
-				// update canvas
-				display_canvas[col] &= ~(mask);
-				display_canvas[col] |= pixels;
-			}
-		}
-		
-		// position of the next char
-		i += char_width + 1;	
+		if(char_width > 0) {
+			// position of the next char
+			i += char_width + 1;
+		}			
 	}	
 }
 
@@ -217,4 +225,9 @@ void display_update()
 	}	
 	
 	display_execute_all();
+}
+
+void display_test_mode()
+{
+	
 }

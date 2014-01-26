@@ -34,7 +34,7 @@ ISR(USART_RXC_vect)
 	if(ch == '\n')
 	{
 		usart_rx_buffer[usart_rx_pos + 1] = '\0';
-		strcpy(usart_command, usart_rx_buffer);
+		strcpy(usart_command, (char*)usart_rx_buffer);
 		usart_rx_pos = 0;
 		usart_has_command = 1;
 	}

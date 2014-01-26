@@ -7,6 +7,18 @@
 #include <avr/io.h>
 #include <string.h>
 
+uint8_t strcmpn(const char* buffer, const char* cmd)
+{
+	uint8_t i;
+	for(i = 0; cmd[i] != '\0'; i++) {
+		if(buffer[i] != cmd[i]) {
+			return 1;
+		}
+	}
+	
+	return 0;
+}
+
 void stradd(char* buffer, const char* str)
 {
 	uint8_t i;
@@ -19,7 +31,7 @@ void stradd(char* buffer, const char* str)
 /**
  * 
  */
-void str_uint16dec(char* str, uint16_t value)
+void str_uint16dec(char* str, uint16_t value, char fill)
 {
 	uint8_t skip = 1;
 	uint8_t pos = 0;

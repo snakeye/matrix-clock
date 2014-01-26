@@ -1,9 +1,9 @@
 /*
- * ds1307.h
- *
- * Created: 04.02.2012 18:42:43
- * Author: Andrey Ovcharov
- */
+* ds1307.h
+*
+* Created: 04.02.2012 18:42:43
+* Author: Andrey Ovcharov
+*/
 #ifndef DS1307_H_
 #define DS1307_H_
 
@@ -11,15 +11,6 @@
 
 #define HOUR_24 0
 #define HOUR_12 1
-
-#define DS1307_SECOND 0 
-#define DS1307_MINUTE 1
-#define DS1307_HOUR 2
-#define DS1307_DAY 3
-#define DS1307_DATE 4
-#define DS1307_MONTH 5
-#define DS1307_YEAR 6
-#define DS1307_CONTROL 7
 
 // DS1307 Register Address
 // Second: ds1307_addr[0]
@@ -30,12 +21,33 @@
 // Month : ds1307_addr[5]
 // Year  : ds1307_addr[6]
 // control ds1307_addr[7]
-extern unsigned char ds1307_addr[8];
+typedef struct {
+	uint8_t second;
+	uint8_t minute;
+	uint8_t hour;
+	uint8_t weekday;
+	uint8_t day;
+	uint8_t month;
+	uint8_t year;
+	uint8_t control;
+} DS1307Data;
+
+extern DS1307Data ds1307_data;
 
 // reset clock chip
 void ds1307_reset ();
 
+//
 void ds1307_tick();
+
+//
+void on_time_changed();
+
+//
+void on_date_changed();
+
+//
+void ds1307_watchdog();
 
 // read clock data
 void ds1307_read ();
@@ -44,9 +56,9 @@ void ds1307_read ();
 void ds1307_write ();
 
 // Convert Decimal to Binary Coded Decimal (BCD)
-unsigned char dec2bcd (unsigned char num);
+uint8_t dec2bcd (uint8_t num);
 
 // Convert Binary Coded Decimal (BCD) to Decimal
-unsigned char bcd2dec (unsigned char num);
+uint8_t bcd2dec (uint8_t num);
 
 #endif /* DS1307_H_ */
