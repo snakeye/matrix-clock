@@ -6,7 +6,7 @@
 */
 #include "i2c.h"
 
-#define MAX_TRIES 50
+#define MAX_TRIES 10
 
 void i2c_init()
 {
@@ -19,7 +19,7 @@ void i2c_init()
 /**
 *
 */
-unsigned char i2c_transmit (unsigned char type)
+uint8_t i2c_transmit (uint8_t type)
 {
 	switch (type)
 	{
@@ -50,9 +50,9 @@ unsigned char i2c_transmit (unsigned char type)
 	return (TWSR & 0xF8);
 }
 
-unsigned char i2c_start (unsigned int dev_id, unsigned int dev_addr, unsigned char rw_type)
+uint8_t i2c_start (unsigned int dev_id, unsigned int dev_addr, uint8_t rw_type)
 {
-	unsigned char twi_status;
+	uint8_t twi_status;
 
 	for (register int n = 0; n < MAX_TRIES; n++)
 	{
@@ -85,17 +85,20 @@ unsigned char i2c_start (unsigned int dev_id, unsigned int dev_addr, unsigned ch
 	return -1;
 }
 
-void i2c_stop (void)
+/**
+*
+*/
+uint8_t i2c_stop (void)
 {
-	unsigned char twi_status;
-
-	// Transmit I2C Data
-	twi_status = i2c_transmit (I2C_STOP);
+	return i2c_transmit (I2C_STOP);
 }
 
-unsigned char i2c_write (unsigned char data)
+/**
+*
+*/
+uint8_t i2c_write (uint8_t data)
 {
-	unsigned char twi_status;
+	uint8_t twi_status;
 
 	// Send the Data to I2C Bus
 	TWDR = data;
@@ -110,9 +113,9 @@ unsigned char i2c_write (unsigned char data)
 	return 0;
 }
 
-unsigned char i2c_read (unsigned char *data, unsigned char ack_type)
+uint8_t i2c_read (uint8_t *data, uint8_t ack_type)
 {
-	unsigned char twi_status;
+	uint8_t twi_status;
 
 	if (ack_type)
 	{

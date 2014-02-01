@@ -7,10 +7,12 @@
 #include <avr/io.h>
 #include <string.h>
 
+#include "../lib/ds1307.h"
+#include "../lib/usart.h"
+#include "../lib/string.h"
+
 #include "brightness.h"
-#include "ds1307.h"
-#include "usart.h"
-#include "string.h"
+#include "marquee.h"
 
 void process_terminal()
 {
@@ -94,6 +96,9 @@ void process_terminal()
 		ds1307_data.second = (usart_command[9] - '0') * 10 + (usart_command[10] - '0');
 		
 		ds1307_write();
+
+		//
+		usart_transmit_async("OK\r\n");
 		
 		return;
 	}
@@ -113,12 +118,16 @@ void process_terminal()
 		
 		ds1307_write();
 		
+		//
+		usart_transmit_async("OK\r\n");
+
 		return;
 	}
 
+	//
 	if(strcmpn(usart_command, "Weekday=") == 0) {
 		// check argument format
-		if(usart_command[8] < '0' || usart_command[8] > '9') {
+		if(usart_command[8] <= '0' || usart_command[8] >= '8') {
 			usart_transmit_async("Error\r\n");
 			return;
 		}
@@ -126,13 +135,17 @@ void process_terminal()
 		ds1307_data.weekday = (usart_command[8] - '0');
 		
 		ds1307_write();
+
+		//
+		usart_transmit_async("OK\r\n");
 		
 		return;
 	}
 	
+	//
 	if(strcmpn(usart_command, "Say ") == 0) {
 		
-		return;
+		
 	}
 	
 	usart_transmit_async("Error\r\n");

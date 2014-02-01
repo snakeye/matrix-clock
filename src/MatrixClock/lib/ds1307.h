@@ -37,18 +37,6 @@ extern DS1307Data ds1307_data;
 // reset clock chip
 void ds1307_reset ();
 
-//
-void ds1307_tick();
-
-//
-void on_time_changed();
-
-//
-void on_date_changed();
-
-//
-void ds1307_watchdog();
-
 // read clock data
 void ds1307_read ();
 
@@ -60,5 +48,13 @@ uint8_t dec2bcd (uint8_t num);
 
 // Convert Binary Coded Decimal (BCD) to Decimal
 uint8_t bcd2dec (uint8_t num);
+
+void ds1307_tick();
+
+// time changed event
+void on_time_changed();
+
+// date changed event
+void on_date_changed();
 
 #endif /* DS1307_H_ */

@@ -189,6 +189,21 @@ uint8_t display_draw_char(int8_t x, int8_t y, char ch)
 	return char_width;
 }
 
+uint16_t display_measure_string(const char* str) 
+{
+	uint16_t width = 0;
+	
+	for(char* p = (char*)str; *p != '\0'; p++) {
+		
+		uint8_t ch_index = (uint8_t) *p;
+
+		// character width		
+		width += pgm_read_byte(&charset_width[ch_index]) + 1;
+	}
+	
+	return (width > 0) ? width - 1 : width;		
+}
+
 /**
  * 
  */

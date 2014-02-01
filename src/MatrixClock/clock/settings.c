@@ -7,10 +7,13 @@
 #include <avr/io.h>
 
 #include "settings.h"
-#include "display.h"
+#include "../lib/display.h"
 
 Settings settings;
 
+/**
+ * 
+ */
 void default_settings()
 {
 	settings.brightness = 0x08;
@@ -19,16 +22,25 @@ void default_settings()
 	settings.brightness_auto = 1;
 }
 
+/**
+ * 
+ */
 void load_settings()
 {
 	default_settings();
 }
 
+/**
+ * 
+ */
 void save_settings()
 {
 	
 }
 
+/**
+ * 
+ */
 void apply_settings()
 {
 	display_set_brightness(settings.brightness);

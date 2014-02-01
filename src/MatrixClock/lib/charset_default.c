@@ -319,7 +319,7 @@ const uint8_t charset_char[] PROGMEM = {
 	0b01111111,
 	0b01000001,
 	0b01000001,
-	// 5c - \
+	// 5c - backslash
 	0b00000010,
 	0b00000100,
 	0b00001000,

@@ -8,7 +8,7 @@
 #include <avr/interrupt.h>
 
 #include "settings.h"
-#include "display.h"
+#include "../lib/display.h"
 
 #define HISTORY_LENGTH 10
 

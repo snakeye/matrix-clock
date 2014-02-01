@@ -11,29 +11,32 @@
 #include <string.h>
 
 #include "lib/display.h"
-#include "lib/ds1307.h"
-#include "lib/brightness.h"
 #include "lib/string.h"
 #include "lib/usart.h"
-#include "lib/buttons.h"
 #include "lib/ds1307.h"
-#include "lib/terminal.h"
 
-#include "lib/settings.h"
+#include "clock/clock.h"
+#include "clock/brightness.h"
+#include "clock/buttons.h"
+#include "clock/terminal.h"
+#include "clock/settings.h"
+#include "clock/marquee.h"
 
 #define MAX_BRIGHTNESS 0x0f
 
 typedef enum {
 	DISPLAY_MODE_WELCOME,
-	DISPLAY_MODE_TIME,
+	DISPLAY_MODE_CLOCK,
 	DISPLAY_MODE_DATE_SHORT,
 	DISPLAY_MODE_DATE_MED,
 	DISPLAY_MODE_WEEKDAY,
+	DISPLAY_MODE_YEAR,
 	DISPLAY_MODE_SETTINGS,
+	DISPLAY_MODE_MARQUEE,
 	DISPLAY_MODE_TEST
 } DisplayMode;
 
-DisplayMode display_mode = DISPLAY_MODE_TIME;
+DisplayMode display_mode = DISPLAY_MODE_WELCOME;
 
 /**
 * Initialize
@@ -65,8 +68,8 @@ void init()
 uint8_t settings_mode;
 
 /**
- * 
- */
+*
+*/
 void on_button_click(uint8_t button)
 {
 	if(button == 0) {
@@ -113,18 +116,18 @@ void on_button_click(uint8_t button)
 		if(display_mode == DISPLAY_MODE_SETTINGS) {
 			settings_mode++;
 			if(settings_mode >= 2) {
-				display_mode = DISPLAY_MODE_TIME;
+				display_mode = DISPLAY_MODE_CLOCK;
 			}
 		}
 		else {
-			display_mode = DISPLAY_MODE_TIME;
+			display_mode = DISPLAY_MODE_CLOCK;
 		}
 	}
 }
 
 /**
- * 
- */
+*
+*/
 void on_button_hold(uint8_t button)
 {
 	if(button == 2) {
@@ -134,49 +137,36 @@ void on_button_hold(uint8_t button)
 }
 
 /**
- * 
- */
+*
+*/
 void on_button_release(uint8_t button)
 {
+	
 }
 
 
-typedef struct {
-	char digits[4];
-	char pos[4];
-	char next[4];
-	char step[4];
-} TimeWidget;
-
-TimeWidget widget = {
-{' ', ' ', ' ', ' '},
-{3, 9, 18, 24},
-{' ', ' ', ' ', ' '},
-{0, 0, 0, 0},
-};
-
 /**
- * 
- */
+*
+*/
 void animate_welcome()
 {
 	static uint8_t tick = 0;
 	
 	if(tick <= 8) {
 		display_clear_canvas();
-		display_draw_string(3 , 8 - tick, "Hello!");
+		display_draw_string(3, 8 - tick, "Hello!");
 	}
 	
 	tick++;
 	if(tick >= 32) {
 		tick = 0;
-		display_mode = DISPLAY_MODE_TIME;
+		display_mode = DISPLAY_MODE_CLOCK;
 	}
 }
 
 /**
- * 
- */
+*
+*/
 void animate_test()
 {
 	static uint8_t tick = 0;
@@ -188,65 +178,14 @@ void animate_test()
 	tick++;
 	if(tick > 64) {
 		tick = 0;
-		display_mode = DISPLAY_MODE_TIME;
+		display_mode = DISPLAY_MODE_CLOCK;
 	}
 }
 
-/**
- * 
- */
-void animate_time()
-{
-	static uint8_t tick = 0;
-	tick++;
-	if(tick >= 32) {
-		tick = 0;
-	}
-	
-	//
-	widget.next[0] = '0' + (ds1307_data.hour / 10);
-	widget.next[1] = '0' + (ds1307_data.hour % 10);
-	
-	widget.next[2] = '0' + (ds1307_data.minute / 10);
-	widget.next[3] = '0' + (ds1307_data.minute % 10);
-
-	// start animations where needed
-	for(uint8_t i = 0; i <  4; i++) {
-		if(widget.digits[i] != widget.next[i] && widget.step[i] == 0) {
-			widget.step[i] = 8;
-		}
-	}
-	
-	// draw widget
-	display_clear_canvas();
-	
-	if(tick > 16) {
-		display_draw_char(15, 0, ':');
-	}
-	
-	// draw digits
-	for(uint8_t i = 0; i < 4; i++) {
-		if(widget.digits[i] != widget.next[i]) {
-			display_draw_char(widget.pos[i], -8 + widget.step[i], widget.digits[i]);
-			display_draw_char(widget.pos[i], widget.step[i], widget.next[i]);
-		}
-		else {
-			display_draw_char(widget.pos[i], 0, widget.digits[i]);
-		}
-		
-		// update animation step
-		if(widget.step[i] > 0) {
-			widget.step[i]--;
-			if(widget.step[i] == 0){
-				widget.digits[i] = widget.next[i];
-			}
-		}
-	}
-}
 
 /**
- * 
- */
+*
+*/
 void animate_date_short()
 {
 	static uint8_t tick = 0;
@@ -267,7 +206,7 @@ void animate_date_short()
 	
 	tick++;
 	if(tick >= 64) {
-		display_mode = DISPLAY_MODE_TIME;
+		display_mode = DISPLAY_MODE_CLOCK;
 		tick = 0;
 	}
 }
@@ -282,7 +221,7 @@ void animate_date_med()
 	static uint8_t tick = 0;
 	
 	if(tick == 0) {
-		char buffer[10];
+		static char buffer[10];
 		
 		buffer[0] = '0' + (ds1307_data.day / 10);
 		buffer[1] = '0' + (ds1307_data.day % 10);
@@ -295,7 +234,7 @@ void animate_date_med()
 	
 	tick++;
 	if(tick >= 64) {
-		display_mode = DISPLAY_MODE_TIME;
+		display_mode = DISPLAY_MODE_CLOCK;
 		tick = 0;
 	}
 }
@@ -310,7 +249,7 @@ void animate_weekday()
 	static uint8_t tick = 0;
 	
 	if(tick == 0) {
-		char buffer[10];
+		static char buffer[10];
 		
 		strcpy(buffer, weekdays[ds1307_data.weekday - 1]);
 
@@ -320,7 +259,7 @@ void animate_weekday()
 	
 	tick++;
 	if(tick >= 64) {
-		display_mode = DISPLAY_MODE_TIME;
+		display_mode = DISPLAY_MODE_CLOCK;
 		tick = 0;
 	}
 }
@@ -341,7 +280,7 @@ void animate_settings()
 	buffer[3] = '0' + (ds1307_data.minute / 10);
 	buffer[4] = '0' + (ds1307_data.minute % 10);	
 	
-	if(tick < 16) {
+	if(tick < 8) {
 		if(settings_mode == 0) {
 			buffer[0] = ' ';
 			buffer[1] = ' ';
@@ -355,10 +294,11 @@ void animate_settings()
 	display_clear_canvas();
 	display_draw_string(3, 0, buffer);
 	
-	if(tick >= 32) {
+	if(tick >= 16) {
 		tick = 0;
 	}
 }
+
 
 /**
  * 
@@ -377,8 +317,8 @@ void animation_tick()
 			case DISPLAY_MODE_TEST:
 			animate_test();
 			break;
-			case DISPLAY_MODE_TIME:
-			animate_time();
+			case DISPLAY_MODE_CLOCK:
+			animate_clock();
 			break;
 			case DISPLAY_MODE_DATE_SHORT:
 			animate_date_short();
@@ -389,14 +329,22 @@ void animation_tick()
 			case DISPLAY_MODE_WEEKDAY:
 			animate_weekday();
 			break;
+			case DISPLAY_MODE_YEAR:
+			break;
 			case DISPLAY_MODE_SETTINGS:
 			animate_settings();
+			break;
+			case DISPLAY_MODE_MARQUEE:
+			animate_marquee();
 			break;
 		}
 		display_update();
 	}
 }
 
+/**
+ * 
+ */
 void on_date_changed()
 {
 	if(ds1307_data.hour == 0 && ds1307_data.minute == 0) {
@@ -404,6 +352,9 @@ void on_date_changed()
 	}
 }
 
+/**
+ * 
+ */
 void on_time_changed()
 {
 	
@@ -425,9 +376,7 @@ int main(void)
 	
 	// apply loaded settings
 	apply_settings();
-	
-	display_mode = DISPLAY_MODE_WELCOME;
-	
+			
 	while(1)
 	{
 		// process inputs
