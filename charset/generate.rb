@@ -44,14 +44,14 @@ offsets = []
 offset = 0
 
 #
-puts 'uint8_t charset_char[] = {'
+puts 'const uint8_t charset_char[] PROGMEM = {'
 for char in 0..127 do 
 	if charset[char]
-		print "// %x - " % char
+		print "\t// %x - " % char
 		puts char.chr
 		offsets[char] = offset
 		charset[char].each do |col|
-			puts "0b%08b," % col
+			puts "\t0b%08b," % col
 			offset += 1
 		end
 	end
@@ -59,29 +59,35 @@ end
 puts '};'
 puts ''
 
-puts 'uint8_t charset_width[] = {'
+puts 'const uint8_t charset_width[] PROGMEM = {'
 for char in 0..127 do 
-	if charset[char]
-		print charset[char].size.to_s
-	else
-		print 0
-	end
+	width = charset[char] && charset[char].size ? charset[char].size : 0
+
+	print "%4d" % width
+	
 	if char < 127
 		print ","
+	end
+	
+	if char % 16 == 15
+		print "\n";
 	end
 end
 puts '};'
 puts ''
 
-puts 'uint16_t charset_offset[] = {'
+puts 'const uint16_t charset_offset[] PROGMEM = {'
 for char in 0..127 do 
-	if offsets[char]
-		print offsets[char].to_s
-	else
-		print 0
-	end
+	offset = offsets[char] ? offsets[char] : 0
+
+	print "%5d" % offset
+	
 	if char < 127
 		print ","
+	end
+
+	if char % 16 == 15
+		print "\n";
 	end
 end
 puts '};'
