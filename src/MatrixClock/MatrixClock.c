@@ -21,22 +21,15 @@
 #include "clock/terminal.h"
 #include "clock/settings.h"
 #include "clock/marquee.h"
+#include "clock/display_mode.h"
 
 #define MAX_BRIGHTNESS 0x0f
 
-typedef enum {
-	DISPLAY_MODE_WELCOME,
-	DISPLAY_MODE_CLOCK,
-	DISPLAY_MODE_DATE_SHORT,
-	DISPLAY_MODE_DATE_MED,
-	DISPLAY_MODE_WEEKDAY,
-	DISPLAY_MODE_YEAR,
-	DISPLAY_MODE_SETTINGS,
-	DISPLAY_MODE_MARQUEE,
-	DISPLAY_MODE_TEST
-} DisplayMode;
-
 DisplayMode display_mode = DISPLAY_MODE_WELCOME;
+
+const char* month_names[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+const char* weekdays[7] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
 
 /**
 * Initialize
@@ -144,7 +137,6 @@ void on_button_release(uint8_t button)
 	
 }
 
-
 /**
 *
 */
@@ -158,7 +150,7 @@ void animate_welcome()
 	}
 	
 	tick++;
-	if(tick >= 32) {
+	if(tick >= 96) {
 		tick = 0;
 		display_mode = DISPLAY_MODE_CLOCK;
 	}
@@ -181,7 +173,6 @@ void animate_test()
 		display_mode = DISPLAY_MODE_CLOCK;
 	}
 }
-
 
 /**
 *
@@ -211,8 +202,6 @@ void animate_date_short()
 	}
 }
 
-char* month_names[12] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-
 /**
  * 
  */
@@ -238,8 +227,6 @@ void animate_date_med()
 		tick = 0;
 	}
 }
-
-char* weekdays[7] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
 /**
  * 

@@ -8,8 +8,8 @@
 #include <avr/interrupt.h>
 #include <string.h>
 
-#define RX_BUFFER_SIZE 32
-#define TX_BUFFER_SIZE 8
+#define RX_BUFFER_SIZE 64
+#define TX_BUFFER_SIZE 64
 
 char usart_command[64];
 uint8_t usart_has_command;
@@ -93,15 +93,15 @@ void usart_transmit_byte_sync(uint8_t data)
 	UDR = data;
 }
 
-void usart_transmit_sync(char* str)
+void usart_transmit_sync(const char* str)
 {
-	for(char* p = str; *p != '\0'; p++)
+	for(char* p = (char*)str; *p != '\0'; p++)
 	{
 		usart_transmit_byte_sync(*p);
 	}
 }
 
-void usart_transmit_async(char* str)
+void usart_transmit_async(const char* str)
 {
 	strcpy((char*)usart_tx_buffer, str);
 	

@@ -10,7 +10,7 @@
 #define MARQUEE_H_
 
 
-void start_marquee(const char* str);
+void start_marquee(const char* str, uint8_t times);
 void animate_marquee();
 
 

@@ -11,6 +11,7 @@
 #include "../lib/usart.h"
 #include "../lib/string.h"
 
+#include "display_mode.h"
 #include "brightness.h"
 #include "marquee.h"
 
@@ -20,7 +21,12 @@ void process_terminal()
 	
 	// hello
 	if(strcmpn(usart_command, "Hello") == 0) {
-		usart_transmit_async("Hello\r\n");
+		usart_transmit_async("Matrix Clock\r\n");
+		return;
+	}
+
+	if(strcmpn(usart_command, "Bye") == 0) {
+		usart_transmit_async("Bye!\r\n");
 		return;
 	}
 	
@@ -142,10 +148,40 @@ void process_terminal()
 		return;
 	}
 	
+	if(strcmpn(usart_command, "Sunrise?") == 0) {
+		usart_transmit_async("N/A\r\n");
+		return;
+	}
+
+	if(strcmpn(usart_command, "Sunset?") == 0) {
+		usart_transmit_async("N/A\r\n");
+		return;
+	}
+
+	if(strcmpn(usart_command, "Moon?") == 0) {
+		usart_transmit_async("N/A\r\n");
+		return;
+	}
+
+	if(strcmpn(usart_command, "Jitter?") == 0) {
+		usart_transmit_async("N/A\r\n");
+		return;
+	}
+	
+	if(strcmpn(usart_command, "Jitter=") == 0) {
+		usart_transmit_async("N/A\r\n");
+		return;
+	}
+	
 	//
 	if(strcmpn(usart_command, "Say ") == 0) {
+		start_marquee(&usart_command[4], 3);
+		display_mode = DISPLAY_MODE_MARQUEE;
+
+		//
+		usart_transmit_async("OK\r\n");
 		
-		
+		return;
 	}
 	
 	usart_transmit_async("Error\r\n");

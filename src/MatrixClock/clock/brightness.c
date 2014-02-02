@@ -10,7 +10,7 @@
 #include "settings.h"
 #include "../lib/display.h"
 
-#define HISTORY_LENGTH 10
+#define HISTORY_LENGTH 30
 
 uint16_t brightness_history[HISTORY_LENGTH] = {0};
 uint8_t brightness_ptr = 0;

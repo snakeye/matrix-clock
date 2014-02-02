@@ -1,0 +1,26 @@
+/*
+* display_mode.h
+*
+* Created: 02.02.2014 11:13:13
+*  Author: snakeye
+*/
+
+
+#ifndef DISPLAY_MODE_H_
+#define DISPLAY_MODE_H_
+
+typedef enum {
+	DISPLAY_MODE_WELCOME,
+	DISPLAY_MODE_CLOCK,
+	DISPLAY_MODE_DATE_SHORT,
+	DISPLAY_MODE_DATE_MED,
+	DISPLAY_MODE_WEEKDAY,
+	DISPLAY_MODE_YEAR,
+	DISPLAY_MODE_SETTINGS,
+	DISPLAY_MODE_MARQUEE,
+	DISPLAY_MODE_TEST
+} DisplayMode;
+
+extern DisplayMode display_mode;
+
+#endif /* DISPLAY_MODE_H_ */

@@ -18,10 +18,10 @@ void usart_init(uint32_t baud);
 void usart_transmit_byte_sync(uint8_t byte);
 
 //
-void usart_transmit_sync(char* str);
+void usart_transmit_sync(const char* str);
 
 //
-void usart_transmit_async(char* str);
+void usart_transmit_async(const char* str);
 
 //
 uint8_t usart_receive_byte_sync();
