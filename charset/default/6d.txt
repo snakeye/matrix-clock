@@ -1,7 +1,7 @@
 // m
 .....
 .....
-XX.XX
+XX.X.
 X.X.X
 X.X.X
 X...X

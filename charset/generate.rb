@@ -45,10 +45,10 @@ offset = 0
 
 #
 puts 'const uint8_t charset_char[] PROGMEM = {'
-for char in 0..127 do 
+for char in 0..255 do 
 	if charset[char]
 		print "\t// %x - " % char
-		puts char.chr
+		puts (char.chr == '\\') ? 'backslash' : char.chr
 		offsets[char] = offset
 		charset[char].each do |col|
 			puts "\t0b%08b," % col
@@ -60,12 +60,12 @@ puts '};'
 puts ''
 
 puts 'const uint8_t charset_width[] PROGMEM = {'
-for char in 0..127 do 
+for char in 0..255 do 
 	width = charset[char] && charset[char].size ? charset[char].size : 0
 
 	print "%4d" % width
 	
-	if char < 127
+	if char < 255
 		print ","
 	end
 	
@@ -77,12 +77,12 @@ puts '};'
 puts ''
 
 puts 'const uint16_t charset_offset[] PROGMEM = {'
-for char in 0..127 do 
+for char in 0..255 do 
 	offset = offsets[char] ? offsets[char] : 0
 
 	print "%5d" % offset
 	
-	if char < 127
+	if char < 255
 		print ","
 	end
 
