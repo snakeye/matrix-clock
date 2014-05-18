@@ -7,12 +7,11 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <string.h>
+#include <ctype.h>
 
+#define COMMAND_SIZE 64
 #define RX_BUFFER_SIZE 64
 #define TX_BUFFER_SIZE 64
-
-char usart_command[64];
-uint8_t usart_has_command;
 
 uint8_t usart_rx_buffer[RX_BUFFER_SIZE];
 uint8_t usart_rx_pos;
@@ -20,47 +19,90 @@ uint8_t usart_rx_pos;
 uint8_t usart_tx_buffer[TX_BUFFER_SIZE];
 uint8_t usart_tx_pos;
 
+char usart_command[COMMAND_SIZE];
+uint8_t usart_has_command;
+
+#define USART_RX_FULL (usart_rx_pos >= RX_BUFFER_SIZE - 1)
+
+/**
+* Append char to USART RX buffer
+*/
+inline void usart_buffer_append(uint8_t ch)
+{
+	// commands are transformed to lower case
+	usart_rx_buffer[usart_rx_pos] = tolower(ch);
+	usart_rx_buffer[usart_rx_pos + 1] = '\0';
+	usart_rx_pos++;
+}
+
+/**
+* Check if command terminal char
+*/
+inline uint8_t isterminal(uint8_t ch)
+{
+	if(ch == '\0' || ch == '\n' || ch == '\r') {
+		return 1;
+	}
+	
+	return 0;
+}
+
+/**
+* USART input interrupt
+*/
 ISR(USART_RXC_vect)
 {
 	uint8_t ch = UDR;
-	
-	// put received char into the buffer
-	if(usart_rx_pos < RX_BUFFER_SIZE - 1)
-	{
-		usart_rx_buffer[usart_rx_pos] = ch;
+
+	// if not space
+	if(!USART_RX_FULL && !isspace(ch)) {
+		usart_buffer_append(ch);
 	}
 	
-	// if EOL received
-	if(ch == '\n')
-	{
-		usart_rx_buffer[usart_rx_pos + 1] = '\0';
-		strcpy(usart_command, (char*)usart_rx_buffer);
-		usart_rx_pos = 0;
-		usart_has_command = 1;
-	}
-	else
-	{
-		if(usart_rx_pos < RX_BUFFER_SIZE - 1)
-		{
-			usart_rx_pos++;
+	// finish command
+	if(isterminal(ch) || USART_RX_FULL) {
+		
+		// if we have something in the buffer
+		if(usart_rx_pos != 0) {
+			// copy buffer to current command
+			strcpy(&usart_command[0], (char*)&usart_rx_buffer[0]);
+			usart_has_command = 1;
 		}
+		
+		// reset buffer
+		usart_rx_pos = 0;
 	}
 }
 
+/**
+* USART output success interrupt
+*/
 ISR(USART_TXC_vect)
 {
-	if(usart_tx_pos >= TX_BUFFER_SIZE || usart_tx_buffer[usart_tx_pos] == '\0')
-	{
-		// stop transmitting
-		UCSRB &= ~(1 << TXCIE);
-	}
-	else
-	{
-		UDR = usart_tx_buffer[usart_tx_pos];
+}
+
+/**
+* Data register is empty
+*/
+ISR(USART_UDRE_vect)
+{
+	// get next char to transmit
+	uint8_t b = usart_tx_buffer[usart_tx_pos];
+	
+	if(b != '\0') {
+		// transmit it
+		UDR = b;
 		usart_tx_pos += 1;
+	}
+	else {
+		// stop transmitting
+		UCSRB &= ~(1 << UDRIE);
 	}
 }
 
+/**
+*
+*/
 void usart_init(uint32_t baud)
 {
 	// calculate value for UBBR register
@@ -76,14 +118,17 @@ void usart_init(uint32_t baud)
 	/* Set frame format: 8data, 1stop bit */
 	UCSRC = (1 << URSEL) | (0b011 << UCSZ0);
 	
-	//
+	// reset buffer positions
 	usart_rx_pos = 0;
 	usart_tx_pos = 0;
 	
-	//
+	// reset command flag
 	usart_has_command = 0;
 }
 
+/**
+*
+*/
 void usart_transmit_byte_sync(uint8_t data)
 {
 	/* Wait for empty transmit buffer */
@@ -93,6 +138,9 @@ void usart_transmit_byte_sync(uint8_t data)
 	UDR = data;
 }
 
+/**
+*
+*/
 void usart_transmit_sync(const char* str)
 {
 	for(char* p = (char*)str; *p != '\0'; p++)
@@ -101,16 +149,25 @@ void usart_transmit_sync(const char* str)
 	}
 }
 
+/**
+*
+*/
 void usart_transmit_async(const char* str)
 {
-	strcpy((char*)usart_tx_buffer, str);
+	strcpy((char*)&usart_tx_buffer[0], str);
+	usart_tx_pos = 0;
 	
-	UDR = usart_tx_buffer[0];
-	usart_tx_pos = 1;
-		
-	UCSRB |= (1 << TXCIE);
+	//UDR = usart_tx_buffer[0];
+	//usart_tx_pos = 1;
+	
+	// start transmitting
+	//UCSRB |= (1 << TXCIE);
+	UCSRB |= (1 << UDRIE);
 }
 
+/**
+*
+*/
 uint8_t usart_receive_byte_sync()
 {
 	/* Wait for data to be received */
@@ -120,6 +177,9 @@ uint8_t usart_receive_byte_sync()
 	return UDR;
 }
 
+/**
+*
+*/
 void usart_receive_sync(char* buffer, uint8_t size)
 {
 	uint8_t i;
@@ -132,6 +192,9 @@ void usart_receive_sync(char* buffer, uint8_t size)
 	buffer[i] = '\0';
 }
 
+/**
+*
+*/
 void usart_receive_async()
 {
 	// Enable the USART Receive Complete interrupt (USART_RXC)

@@ -215,7 +215,7 @@ void animate_date_med()
 		buffer[0] = '0' + (ds1307_data.day / 10);
 		buffer[1] = '0' + (ds1307_data.day % 10);
 
-		stradd(buffer, month_names[ds1307_data.month - 1]);
+		strcat(buffer, month_names[ds1307_data.month - 1]);
 
 		display_clear_canvas();
 		display_draw_string(1, 0, buffer);

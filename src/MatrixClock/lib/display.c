@@ -24,6 +24,9 @@ DisplayCommand display_cmd_buffer[DISPLAY_SEGMENTS][DISPLAY_QUEUE_LENGTH];
 uint8_t display_cmd_max[DISPLAY_SEGMENTS] = {0};
 uint8_t display_cmd_cur[DISPLAY_SEGMENTS] = {0};
 
+/**
+ * 
+ */
 uint8_t display_have_commands()
 {
 	for(uint8_t i = 0; i < DISPLAY_SEGMENTS; i++)
@@ -34,6 +37,9 @@ uint8_t display_have_commands()
 	return 0;
 }
 
+/**
+ * 
+ */
 void display_push_cmd(uint8_t segment, uint8_t reg, uint8_t data)
 {
 	uint8_t pos = display_cmd_max[segment];
@@ -42,6 +48,9 @@ void display_push_cmd(uint8_t segment, uint8_t reg, uint8_t data)
 	display_cmd_max[segment] = (pos + 1) % DISPLAY_QUEUE_LENGTH;	
 }
 
+/**
+ * 
+ */
 void display_execute()
 {
 	max7219_start();
@@ -67,6 +76,9 @@ void display_execute()
 	max7219_latch();
 }
 
+/**
+ * 
+ */
 void display_execute_all()
 {
 	while(display_have_commands())
@@ -75,12 +87,16 @@ void display_execute_all()
 	}
 }
 
+/**
+ * 
+ */
 void display_init()
 {
 	// disable JTAG. Write twice within 4 cycles
 	MCUCSR = (1<<JTD);
 	MCUCSR = (1<<JTD);
 
+	//
 	DDRC |= (1 << MAX7219_DIN) | (1 << MAX7219_CLK) | (1 << MAX7219_LOAD);
 	
 	for(uint8_t i = 0; i < DISPLAY_SEGMENTS; i++) {
@@ -97,6 +113,9 @@ void display_init()
 	display_execute_all();
 }
 
+/**
+ * 
+ */
 void display_set_brightness(uint8_t brightness)
 {
 	uint8_t i;
@@ -106,6 +125,9 @@ void display_set_brightness(uint8_t brightness)
 	display_execute_all();
 }
 
+/**
+ * 
+ */
 void display_clear_canvas()
 {
 	for(uint8_t i = 0; i < DISPLAY_SEGMENTS; i++) {
@@ -115,16 +137,25 @@ void display_clear_canvas()
 	}
 }
 
+/**
+ * 
+ */
 void display_set_column(uint8_t col, uint8_t data)
 {
 	display_canvas[col] = data;
 }
 
+/**
+ * 
+ */
 void display_set_pixel(uint8_t x, uint8_t y)
 {
 	display_canvas[x] |= (1 << y);	
 }
 
+/**
+ * 
+ */
 void display_clear_pixel(uint8_t x, uint8_t y)
 {
 	display_canvas[x] &= ~(1 << y);
@@ -189,6 +220,9 @@ uint8_t display_draw_char(int8_t x, int8_t y, char ch)
 	return char_width;
 }
 
+/**
+ * Return string width
+ */
 uint16_t display_measure_string(const char* str) 
 {
 	uint16_t width = 0;
@@ -242,6 +276,9 @@ void display_update()
 	display_execute_all();
 }
 
+/**
+ * 
+ */
 void display_test_mode()
 {
 	

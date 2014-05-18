@@ -7,25 +7,19 @@
 #include <avr/io.h>
 #include <string.h>
 
-uint8_t strcmpn(const char* buffer, const char* cmd)
+/**
+ * 
+ */
+uint8_t strcmp_n(const char* buffer, const char* cmd, uint8_t len)
 {
 	uint8_t i;
-	for(i = 0; cmd[i] != '\0'; i++) {
+	for(i = 0; i < len && cmd[i] != '\0'; i++) {
 		if(buffer[i] != cmd[i]) {
 			return 1;
 		}
 	}
 	
 	return 0;
-}
-
-void stradd(char* buffer, const char* str)
-{
-	uint8_t i;
-	for(i = 0; buffer[i] != '\0'; i++) {
-		
-	}
-	strcpy(&buffer[i], str);
 }
 
 /**

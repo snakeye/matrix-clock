@@ -10,7 +10,7 @@
 #include "settings.h"
 #include "../lib/display.h"
 
-#define HISTORY_LENGTH 30
+#define HISTORY_LENGTH 20
 
 uint16_t brightness_history[HISTORY_LENGTH] = {0};
 uint8_t brightness_ptr = 0;
@@ -80,7 +80,7 @@ void brightness_tick()
 	static uint8_t tick = 0;
 
 	tick++;
-	if(tick >= 100) {
+	if(tick >= 250) {
 		tick = 0;
 		
 		if(settings.brightness_auto) {

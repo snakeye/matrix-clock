@@ -7,10 +7,7 @@
 #ifndef STRING_H_
 #define STRING_H_
 
-uint8_t strcmpn(const char* buffer, const char* cmd);
-
-//
-void stradd(char* buffer, const char* str);
+uint8_t strcmp_n(const char* buffer, const char* cmd, uint8_t len);
 
 //
 void str_uint8hex(char* str, uint8_t value);
