@@ -22,6 +22,7 @@
 #include "clock/settings.h"
 #include "clock/marquee.h"
 #include "clock/display_mode.h"
+#include "clock/watchdog.h"
 
 #define MAX_BRIGHTNESS 0x0f
 
@@ -36,6 +37,11 @@ const char* weekdays[7] = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 */
 void init()
 {
+	// disable interrupts
+	cli();
+
+	watchdog_init();
+
 	// enable interrupts
 	sei();
 
@@ -386,6 +392,8 @@ int main(void)
 
 		//
 		_delay_ms(1);
+		
+		asm("wdr");
 	}
 	
 	return 0;

@@ -15,7 +15,7 @@
 uint16_t brightness_history[HISTORY_LENGTH] = {0};
 uint8_t brightness_ptr = 0;
 
-uint16_t brightness;
+uint16_t brightness = 0x8;
 
 /**
 * ADC Interrupt handler
