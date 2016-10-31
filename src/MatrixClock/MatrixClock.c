@@ -64,7 +64,18 @@ void init()
 	ds1307_read();
 }
 
-uint8_t settings_mode;
+typedef enum {
+	SET_HOUR = 1,
+	SET_MINUTE = 2,
+	SET_TZ = 3,
+	SET_DAY = 4,
+	SET_MONTH = 5,
+	SET_YEAR = 6,
+	SET_MAX_BRIGHTNESS = 7
+} SETTINGS_MODE;
+
+SETTINGS_MODE settings_mode;
+const uint8_t LAST_SETTING = SET_TZ;
 
 /**
 *
@@ -74,12 +85,12 @@ void on_button_click(uint8_t button)
 	if(button == 0) {
 		if(display_mode == DISPLAY_MODE_SETTINGS) {
 			switch(settings_mode) {
-				case 0:
+				case SET_HOUR:
 				ds1307_data.hour += 1;
 				if(ds1307_data.hour > 23) ds1307_data.hour = 0;
 				ds1307_write();
 				break;
-				case 1:
+				case SET_MINUTE:
 				ds1307_data.minute += 1;
 				if(ds1307_data.minute > 59) ds1307_data.minute = 0;
 				ds1307_write();
@@ -94,12 +105,12 @@ void on_button_click(uint8_t button)
 	if(button == 1) {
 		if(display_mode == DISPLAY_MODE_SETTINGS) {
 			switch(settings_mode) {
-				case 0:
+				case SET_HOUR:
 				ds1307_data.hour -= 1;
 				if(ds1307_data.hour > 23) ds1307_data.hour = 23;
 				ds1307_write();
 				break;
-				case 1:
+				case SET_MINUTE:
 				ds1307_data.minute -= 1;
 				if(ds1307_data.minute > 59) ds1307_data.minute = 59;
 				ds1307_write();
@@ -114,7 +125,8 @@ void on_button_click(uint8_t button)
 	if(button == 2) {
 		if(display_mode == DISPLAY_MODE_SETTINGS) {
 			settings_mode++;
-			if(settings_mode >= 2) {
+			if(settings_mode > LAST_SETTING) {
+				save_settings();
 				display_mode = DISPLAY_MODE_CLOCK;
 			}
 		}
@@ -131,7 +143,7 @@ void on_button_hold(uint8_t button)
 {
 	if(button == 2) {
 		display_mode = DISPLAY_MODE_SETTINGS;
-		settings_mode = 0;
+		settings_mode = SET_HOUR;
 	}
 }
 
@@ -209,8 +221,8 @@ void animate_date_short()
 }
 
 /**
- * 
- */
+*
+*/
 void animate_date_med()
 {
 	static uint8_t tick = 0;
@@ -235,8 +247,8 @@ void animate_date_med()
 }
 
 /**
- * 
- */
+*
+*/
 void animate_weekday()
 {
 	static uint8_t tick = 0;
@@ -258,44 +270,66 @@ void animate_weekday()
 }
 
 /**
- * 
- */
+*
+*/
 void animate_settings()
 {
 	static uint8_t tick = 0;
-	tick++;
-	
 	static char buffer[10];
 	
-	buffer[0] = '0' + (ds1307_data.hour / 10);
-	buffer[1] = '0' + (ds1307_data.hour % 10);
-	buffer[2] = ':';
-	buffer[3] = '0' + (ds1307_data.minute / 10);
-	buffer[4] = '0' + (ds1307_data.minute % 10);	
-	
-	if(tick < 8) {
-		if(settings_mode == 0) {
+	if (settings_mode == SET_HOUR || settings_mode == SET_MINUTE) {
+		buffer[0] = '0' + (ds1307_data.hour / 10);
+		buffer[1] = '0' + (ds1307_data.hour % 10);
+		buffer[2] = ':';
+		buffer[3] = '0' + (ds1307_data.minute / 10);
+		buffer[4] = '0' + (ds1307_data.minute % 10);
+		
+		if(tick < 8) {
+			if(settings_mode == SET_HOUR) {
+				buffer[0] = ' ';
+				buffer[1] = ' ';
+			}
+			if(settings_mode == SET_MINUTE) {
+				buffer[3] = ' ';
+				buffer[4] = ' ';
+			}
+		}
+
+		display_clear_canvas();
+		display_draw_string(3, 0, buffer);
+
+	}
+	else if (settings_mode == SET_TZ) {
+		if(tick < 8) {
+			if (settings.tzOffset < 0) {
+				buffer[0] = '-';
+			}
+			else {
+				buffer[0] = '+';
+			}
+
+			buffer[1] = '0' + (settings.tzOffset / 10);
+			buffer[2] = '0' + (settings.tzOffset % 10);
+
+		}
+		else {
 			buffer[0] = ' ';
 			buffer[1] = ' ';
+			buffer[2] = ' ';
 		}
-		if(settings_mode == 1) {
-			buffer[3] = ' ';
-			buffer[4] = ' ';
-		}
-	}	
-	
-	display_clear_canvas();
-	display_draw_string(3, 0, buffer);
-	
-	if(tick >= 16) {
-		tick = 0;
+		
+		display_clear_canvas();
+		display_draw_string(3, 0, buffer);
 	}
+	
+	
+	tick = (tick + 1) % 16;
 }
 
 
 /**
- * 
- */
+*
+*/
 void animation_tick()
 {
 	static uint8_t tick = 0;
@@ -336,8 +370,8 @@ void animation_tick()
 }
 
 /**
- * 
- */
+*
+*/
 void on_date_changed()
 {
 	if(ds1307_data.hour == 0 && ds1307_data.minute == 0) {
@@ -346,8 +380,8 @@ void on_date_changed()
 }
 
 /**
- * 
- */
+*
+*/
 void on_time_changed()
 {
 	
@@ -369,15 +403,9 @@ int main(void)
 	
 	// apply loaded settings
 	apply_settings();
-			
+	
 	while(1)
 	{
-		// process inputs
-		if(usart_has_command) {
-			process_terminal();
-			usart_has_command = 0;
-		}
-
 		//
 		buttons_tick();
 

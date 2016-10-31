@@ -16,10 +16,9 @@ Settings settings;
  */
 void default_settings()
 {
-	settings.brightness = 0x08;
-	settings.brightness_min = 0;
+	settings.tzOffset = 0;
+	settings.brightness = 0x00;
 	settings.brightness_max = 0x0f;
-	settings.brightness_auto = 1;
 }
 
 /**

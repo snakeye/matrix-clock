@@ -8,10 +8,8 @@
 #define SETTINGS_H_
 
 typedef struct {
-	
+	int8_t tzOffset;	
 	uint8_t brightness;
-	uint8_t brightness_auto;
-	uint8_t brightness_min;
 	uint8_t brightness_max;
 } Settings;
 
